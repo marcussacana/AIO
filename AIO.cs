@@ -85,7 +85,7 @@ namespace aio
     }
 
 
-    public struct PluginCreator {
+    public class PluginCreator {
         public string Name { get; private set; }
         public string Extensions { get; private set; }
 
