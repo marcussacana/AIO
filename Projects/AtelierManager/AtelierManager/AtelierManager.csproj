@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{92B02EEB-33A3-427A-90C1-6079E6D0D49C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AtelierManager</RootNamespace>
+    <AssemblyName>AtelierManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EBM.cs" />
+    <Compile Include="EBM4.cs" />
+    <Compile Include="EBM3.cs" />
+    <Compile Include="EBM2.cs" />
+    <Compile Include="EBM1.cs" />
+    <Compile Include="EBM0.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\crc32.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\EncodingFoundException.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlAttribute.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlAttributeCollection.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlCmdLine.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlCommentNode.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlConsoleListener.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlDocument.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlDocument.PathMethods.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlDocument.Xpath.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlElementFlag.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlEntity.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlNameTable.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlNode.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlNode.Encapsulator.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlNode.Xpath.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlNodeCollection.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlNodeNavigator.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlNodeType.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlParseError.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlParseErrorCode.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlTextNode.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlWeb.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlWeb.Xpath.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\HtmlWebException.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\InvalidProgramException.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\IOLibrary.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\Metro\HtmlWeb.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\Metro\InvalidProgramException.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\MimeTypeMap.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\MixedCodeDocument.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\MixedCodeDocumentCodeFragment.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\MixedCodeDocumentFragment.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\MixedCodeDocumentFragmentList.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\MixedCodeDocumentFragmentType.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\MixedCodeDocumentTextFragment.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\NameValuePair.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\NameValuePairList.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\Trace.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\Trace.FullFramework.cs" />
+    <Compile Include="HtmlAgilityPack.Shared\Utilities.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StructStream.cs" />
+    <Compile Include="XML.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este projeto faz referência a pacotes do NuGet que não estão presentes neste computador. Use a Restauração de Pacotes do NuGet para baixá-los.  Para obter mais informações, consulte http://go.microsoft.com/fwlink/?LinkID=322105. O arquivo ausente é {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.6.0.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
+  </Target>
+</Project>

@@ -1,0 +1,10 @@
+Font and text wrap
+You’ll find the main font in 00008171 located in KSC-MAIN. It’s a simple FLA file underneath.
+The game also has a hardcoded text wrap located in the form a few <br>s in the KSC-Scripts archive.
+Just do a search within the extracted directory to find the right file. You can replace the <br> 
+with a non-existent tag like <aa> to get rid of the forced line break.
+
+If you have plans to translate from the English Version, 
+You need use the "Recovery" Function to restore the script
+encryption, or edit the source to don't compress and don't
+encrypt the translated script.

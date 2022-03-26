@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrototypeManager", "PrototypeManager\PrototypeManager.csproj", "{5D70C3C4-FB3B-46D7-81C8-717758206AEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMGUI", "PMGUI\PMGUI.csproj", "{79C5D8DF-73AA-4E8B-A249-D70AFBF8F4E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D70C3C4-FB3B-46D7-81C8-717758206AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D70C3C4-FB3B-46D7-81C8-717758206AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D70C3C4-FB3B-46D7-81C8-717758206AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D70C3C4-FB3B-46D7-81C8-717758206AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79C5D8DF-73AA-4E8B-A249-D70AFBF8F4E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79C5D8DF-73AA-4E8B-A249-D70AFBF8F4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79C5D8DF-73AA-4E8B-A249-D70AFBF8F4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79C5D8DF-73AA-4E8B-A249-D70AFBF8F4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {434C2B9A-BA7D-4C0E-BFC0-B27AC241D48B}
+	EndGlobalSection
+EndGlobal
