@@ -14,7 +14,11 @@ namespace AtelierManager
         }
 
         public override string[] Import() {
-            switch (Mode) {
+            switch (Mode)
+            {
+                case 5:
+                    Manager = new EBM5(Script);
+                    break;
                 case 4:
                     Manager = new EBM4(Script);
                     break;
@@ -31,7 +35,7 @@ namespace AtelierManager
                     Manager = new EBM0(Script);
                     break;
                 default:
-                    for (int i = 4; i >= 0; i--)
+                    for (int i = 5; i >= 0; i--)
                     {
                         try
                         {
