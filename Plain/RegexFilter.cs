@@ -1,0 +1,64 @@
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
+
+public class RegexFilter : PluginBase
+{
+    Encoding Encoding = Encoding.UTF8;
+    string Script = string.Empty;
+
+    string[] Regexs = new string[] {
+
+        //EntisGLS
+        "text_EN=\"([^\"\\\\]*(?:\\\\.[^\"\\\\]*)*)\"", "name_EN=\"([^\"\\\\]*(?:\\\\.[^\"\\\\]*)*)\"" 
+    };
+    public RegexFilter(byte[] Script) {
+        this.Script = Encoding.GetString(Script);
+    }
+
+    public override string[] Import()
+    {
+        List<string> Lines = new List<string>();
+        foreach (var Exp in Regexs)
+        {
+            Regex Regex = new Regex(Exp, RegexOptions.Multiline);
+            var Results = Regex.Matches(Script);
+            foreach (var Result in Results.Cast<Match>())
+            {
+                foreach (var Group in Result.Groups.Cast<Group>().Skip(1))
+                {
+                    Entries.Add(new Entry() { Offset = Group.Index, Length = Group.Length });
+                    Lines.Add(HttpUtility.HtmlDecode(Group.Value));
+                }
+            }
+        }
+        return Lines.ToArray();
+    }
+
+    List<Entry> Entries = new List<Entry>();
+
+    struct Entry
+    {
+        public int Offset;
+        public int Length;
+        public string Content;
+    }
+
+    public override byte[] Export(string[] Lines)
+    {
+        StringBuilder Builder = new StringBuilder(Script);
+
+        var SortedEntries = Entries.Select((e, n) => { 
+            e.Content = Lines[n].Replace("\\\"", "\x0").Replace("\"", "\\\"").Replace("\x0", "\\\""); 
+            return e;
+        }).OrderByDescending(x => x.Offset);
+
+        foreach (var Entry in SortedEntries)
+        {
+            Builder.Remove(Entry.Offset, Entry.Length);
+            Builder.Insert(Entry.Offset, HttpUtility.HtmlEncode(Entry.Content));
+        }
+
+        return Encoding.GetBytes(Builder.ToString());
+    }
+}

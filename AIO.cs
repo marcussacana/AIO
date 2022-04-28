@@ -77,7 +77,8 @@ namespace aio
 //                new PluginCreator("Tales of Xillia", "*.dbs; *.dbseng", true, true, typeof()), //Plugin not made by me
                 new PluginCreator("PO (Filter)", "*.po", true, true, typeof(PO.POPlain)),
                 new PluginCreator("JSON (Filter)", "*.json", true, true, typeof(Json.Helper)),
-                new PluginCreator("NekoNyan KGS File", "*.kgs", true, true, typeof(NekoNyan.KGS))
+                new PluginCreator("NekoNyan KGS File", "*.kgs", true, true, typeof(NekoNyan.KGS)),
+                new PluginCreator("EntisGLS Filter", "*.srcxml", true, true, typeof(RegexFilter))
 
             };
         }
