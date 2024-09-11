@@ -1,4 +1,4 @@
-﻿//Updated time: 24/03/2022
+﻿//Updated time: 20/03/2023
 using System.Text;
 using System.Reflection;
 using System.Collections;
@@ -126,7 +126,13 @@ namespace AdvancedBinary
         {
             this.FieldName = FieldName;
         }
+        public RArray(string FieldName, int Delta)
+        {
+            this.FieldName = FieldName;
+            this.Delta = Delta;
+        }
         public string FieldName = null;
+        public int Delta = 0;
     }
 
     /// <summary>
@@ -294,10 +300,11 @@ namespace AdvancedBinary
                 if (HasAttribute(field, Const.RARRAY))
                 {
                     string Name = GetAttributePropertyValue(field, Const.RARRAY, "FieldName");
+                    int Delta = GetAttributePropertyValue(field, Const.RARRAY, "Delta");
 
                     FieldInfo Reference = (from x in fields where x.Name == Name select x).Single();
 
-                    long Count = (long)(dynamic)Reference.GetValue(Struct);
+                    long Count = (long)(dynamic)Reference.GetValue(Struct) + Delta;
 
                     Length += GetFieldLength(field) * Count;
                     continue;
@@ -466,8 +473,13 @@ namespace AdvancedBinary
 
                 dynamic Value = field.GetValue(Instance);
                 string PFieldName = Tools.GetAttributePropertyValue(field, Const.RARRAY, "FieldName");
+                int Delta = Tools.GetAttributePropertyValue(field, Const.RARRAY, "Delta");
                 FieldInfo PrefixField = (from x in fields where x.Name == PFieldName select x).First();
-                PrefixField.SetValue(Instance, ParseType(Value.LongLength, PrefixField.FieldType.FullName));
+
+                var Length = Value.LongLength;
+                Length -= Delta;
+
+                PrefixField.SetValue(Instance, ParseType(Length, PrefixField.FieldType.FullName));
             }
 
             foreach (FieldInfo field in fields)
@@ -889,8 +901,10 @@ namespace AdvancedBinary
                     else if (Tools.HasAttribute(field, Const.RARRAY))
                     {
                         string PFieldName = Tools.GetAttributePropertyValue(field, Const.RARRAY, "FieldName");
+                        int Delta = Tools.GetAttributePropertyValue(field, Const.RARRAY, "Delta");
                         FieldInfo PrefixField = (from x in fields where x.Name == PFieldName select x).First();
                         Count = PrefixField.GetValue(Instance);
+                        Count += Delta;
 
                     }
                     else throw new Exception("Bad Struct Array Configuration");
@@ -1252,7 +1266,7 @@ namespace AdvancedBinary
             byte[] Buff = new byte[2];
             int i = BaseStream.Read(Buff, 0, Buff.Length);
             BaseStream.Position -= i;
-            return BigEndian ? BitConverter.ToInt16(Buff, 0) : Tools.Reverse(BitConverter.ToInt16(Buff, 0));
+            return BigEndian ? Tools.Reverse(BitConverter.ToInt16(Buff, 0)) : BitConverter.ToInt16(Buff, 0);
         }
 
         internal int PeekInt()
@@ -1260,7 +1274,7 @@ namespace AdvancedBinary
             byte[] Buff = new byte[4];
             int i = BaseStream.Read(Buff, 0, Buff.Length);
             BaseStream.Position -= i;
-            return BigEndian ? BitConverter.ToInt32(Buff, 0) : Tools.Reverse(BitConverter.ToInt32(Buff, 0));
+            return BigEndian ? Tools.Reverse(BitConverter.ToInt32(Buff, 0)) : BitConverter.ToInt32(Buff, 0);
         }
 
         internal uint PeekUInt()
@@ -1268,7 +1282,7 @@ namespace AdvancedBinary
             byte[] Buff = new byte[4];
             int i = BaseStream.Read(Buff, 0, Buff.Length);
             BaseStream.Position -= i;
-            return BigEndian ? BitConverter.ToUInt32(Buff, 0) : Tools.Reverse(BitConverter.ToUInt32(Buff, 0));
+            return BigEndian ? Tools.Reverse(BitConverter.ToUInt32(Buff, 0)) : BitConverter.ToUInt32(Buff, 0);
         }
 
         internal long PeekLong()

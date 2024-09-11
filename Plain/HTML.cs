@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Web;
 
 namespace HTML
@@ -22,15 +23,15 @@ namespace HTML
             }
             this.Script = Eco.GetString(Script).Replace("\r\n", "\n");
         }
-		
-		private readonly string[] SkipTags = new string[] { "style" };
+
+        private readonly string[] SkipTags = new string[] { "style" };
         private readonly string[] AllowTags = new string[] { "em", "b", "i", "br" };
         public override string[] Import()
         {
             Infos = new List<TextInfo>();
             int Status = 0;
             bool DenyTag = false;
-			bool InSkip = false;
+            bool InSkip = false;
             TextInfo LastTagInfo = new TextInfo();
             TextInfo TagInfo = new TextInfo();
             TextInfo Current = new TextInfo();
@@ -51,30 +52,33 @@ namespace HTML
                         if (c == '>')
                         {
                             TagInfo.End = i;
-                            string Tag = GetText(TagInfo).ToLower().Trim(' ', '\n', '\r', '<', '>', '\\', '/');							
-							bool SkipTag = (from x in SkipTags where Tag.StartsWith(x) select x).Any();
-							if (SkipTag) {
-								InSkip = !InSkip;
-								if (!InSkip){
-									Current = new TextInfo();
-									Current.Begin = i + 1;
-									if (Infos.Count > 0)
-										Infos.Remove(Infos.Last());
-									Status = 2;
-									break;
-								}
-							}
-							bool AllowedTag = (from x in AllowTags where Tag == x select x).Any();
-							bool IncludeTag = false;
-							if (DenyTag && AllowedTag){
-								int LastEnd = LastTagInfo.End + 1;
+                            string Tag = GetText(TagInfo).ToLower().Trim(' ', '\n', '\r', '<', '>', '\\', '/');
+                            bool SkipTag = (from x in SkipTags where Tag.StartsWith(x) select x).Any();
+                            if (SkipTag)
+                            {
+                                InSkip = !InSkip;
+                                if (!InSkip)
+                                {
+                                    Current = new TextInfo();
+                                    Current.Begin = i + 1;
+                                    if (Infos.Count > 0)
+                                        Infos.Remove(Infos.Last());
+                                    Status = 2;
+                                    break;
+                                }
+                            }
+                            bool AllowedTag = (from x in AllowTags where Tag == x select x).Any();
+                            bool IncludeTag = false;
+                            if (DenyTag && AllowedTag)
+                            {
+                                int LastEnd = LastTagInfo.End + 1;
                                 while (char.IsWhiteSpace(Script[LastEnd]))
                                     LastEnd++;
-								if (LastEnd == TagInfo.Begin)
-									IncludeTag = true;
-							}
-							
-							if (!DenyTag && AllowedTag)
+                                if (LastEnd == TagInfo.Begin)
+                                    IncludeTag = true;
+                            }
+
+                            if (!DenyTag && AllowedTag)
                             {
                                 Current = Infos.Last();
                                 Infos.Remove(Current);
@@ -86,36 +90,37 @@ namespace HTML
                             Status = 2;
                             Current = new TextInfo();
                             Current.Begin = i + 1;
-							
-							if (IncludeTag)
-								Current.Begin = TagInfo.Begin;
-							
+
+                            if (IncludeTag)
+                                Current.Begin = TagInfo.Begin;
+
                             continue;
                         }
-						if (InSkip)
-							continue;
+                        if (InSkip)
+                            continue;
                         if (char.IsWhiteSpace(c) && i == Current.Begin)
                             Current.Begin = i;
                         break;
                     case 2:
                         if (c == '<')
                         {
-							var Tag = GetTagAt(Script, i).Split(' ')[0].ToLower().Trim(' ', '\n', '\r', '<', '>', '\\', '/');
-							bool AllowedTag = (from x in AllowTags where Tag == x select x).Any();
-							if (AllowedTag)
-								break;
-							
+                            var Tag = GetTagAt(Script, i).Split(' ')[0].ToLower().Trim(' ', '\n', '\r', '<', '>', '\\', '/');
+                            bool AllowedTag = (from x in AllowTags where Tag == x select x).Any();
+                            if (AllowedTag)
+                                break;
+
                             Current.End = i;
                             if (Current.Length > 2)
                             {
                                 while (char.IsWhiteSpace(Script[Current.End - 1]))
                                     Current.End--;
-                                if (Current.Length > 2) {
-									DenyTag = false;
+                                if (Current.Length > 2)
+                                {
+                                    DenyTag = false;
                                     Infos.Add(Current);
                                 }
                             }
-							LastTagInfo = TagInfo;
+                            LastTagInfo = TagInfo;
                             TagInfo.Begin = i;
                             Status = 1;
                             break;
@@ -125,17 +130,18 @@ namespace HTML
             }
             return (from x in Infos select GetText(x)).ToArray();
         }
-		
-		private string GetTagAt(string Str, int Index){
-			if (Str[Index] == '<')
-				Index++;
-			int Begin = Index;
-			while (Str[Index] != '>')
-				Index++;
-			
-			int Len = Index - Begin;
-			return Str.Substring(Begin, Len);
-		}
+
+        private string GetTagAt(string Str, int Index)
+        {
+            if (Str[Index] == '<')
+                Index++;
+            int Begin = Index;
+            while (Str[Index] != '>')
+                Index++;
+
+            int Len = Index - Begin;
+            return Str.Substring(Begin, Len);
+        }
 
         public override byte[] Export(string[] Text)
         {
@@ -166,13 +172,13 @@ namespace HTML
 
         private string GetText(TextInfo Info)
         {
-            return HttpUtility.HtmlDecode(Script.Substring(Info.Begin, Info.End - Info.Begin));
+            return WebUtility.HtmlDecode(Script.Substring(Info.Begin, Info.End - Info.Begin));
         }
 
         private void SetText(TextInfo Info, StringBuilder Builder, string Content)
         {
             Builder.Remove(Info.Begin, Info.Length);
-            Builder.Insert(Info.Begin, HttpUtility.HtmlEncode(Content));
+            Builder.Insert(Info.Begin, WebUtility.HtmlEncode(Content).Replace("&lt;br /&gt;", "<br />").Replace("&lt;br/&gt;", "<br/>").Replace("&lt;br&gt;", "<br>"));
         }
     }
 }

@@ -2,34 +2,39 @@
 
 namespace SSA
 {
-    public class Subtitle : PluginBase {
+    public class Subtitle : PluginBase
+    {
         string[] Script;
         Dictionary<int, string> Prefix;
         Dictionary<int, string> Sufix;
         int StartIndex;
-        public Subtitle(byte[] Script) {
+        public Subtitle(byte[] Script)
+        {
             this.Script = Encoding.UTF8.GetString(Script).Replace("\r\n", "\n").Split('\n');
         }
 
-        public override string[] Import() {
+        public override string[] Import()
+        {
             List<string> Subtitle = new List<string>();
             Prefix = new Dictionary<int, string>();
             Sufix = new Dictionary<int, string>();
             StartIndex = 0;
             while (!Script[++StartIndex].ToLower().TrimStart().StartsWith("dialogue:"))
                 continue;
-            for (int i = StartIndex; i < Script.Length; i++) {
+            for (int i = StartIndex; i < Script.Length; i++)
+            {
                 //Dialogue: 10,0:00:05.77,0:00:09.36,Default,Subaru,0,0,0,,I'm in deep shit. Seriously deep shit!
 
-                try {
-                    if (string.IsNullOrWhiteSpace(Script[i]))
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(Script[i]) || !Script[i].ToLower().TrimStart().StartsWith("dialogue:"))
                         continue;
                     string Line = GetLine(i);
                     if (Line.StartsWith("{"))
                         GetPrefix(i, ref Line);
                     if (Line.EndsWith("}"))
                         GetSufix(i, ref Line);
-					Clear(ref Line);
+                    Clear(ref Line);
                     Subtitle.Add(Line.Replace("\\N", "\n"));
                 }
                 catch { System.Diagnostics.Debugger.Break(); }
@@ -37,25 +42,29 @@ namespace SSA
 
             return Subtitle.ToArray();
         }
-		
-		private void Clear(ref string Text){
-			string New = string.Empty;
-			bool InTag = false;
-			foreach (char c in Text){
-				if (c == '{')
-					InTag = true;
-				if (c == '}'){
-					InTag = false;
-					continue;
-				}
-				if (InTag)
-					continue;
-				New += c;
-			}
-			Text = New;
-		}
 
-        private string GetLine(int ID) {
+        private void Clear(ref string Text)
+        {
+            string New = string.Empty;
+            bool InTag = false;
+            foreach (char c in Text)
+            {
+                if (c == '{')
+                    InTag = true;
+                if (c == '}')
+                {
+                    InTag = false;
+                    continue;
+                }
+                if (InTag)
+                    continue;
+                New += c;
+            }
+            Text = New;
+        }
+
+        private string GetLine(int ID)
+        {
             string[] Splited = Script[ID].Split(',');
             int len = 0;
             for (int i = 0; i < 9; i++)
@@ -63,20 +72,25 @@ namespace SSA
             return Script[ID].Substring(len, Script[ID].Length - len);
         }
 
-        public override byte[] Export(string[] Subtitle) {
-            for (int i = StartIndex; i < Script.Length; i++) {
-                int ID = i - StartIndex;
-                if (ID >= Subtitle.Length)
+        public override byte[] Export(string[] Subtitle)
+        {
+            for (int i = StartIndex, x = 0; i < Script.Length; i++)
+            {
+                if (x >= Subtitle.Length)
                     break;
-                string NewLine = Subtitle[ID];
+
+                if (!Script[i].ToLower().TrimStart().StartsWith("dialogue:"))
+                    continue;
+
+                string NewLine = Subtitle[x++];
                 FixTags(ref NewLine);
                 if (Prefix.ContainsKey(i))
                     NewLine = Prefix[i] + NewLine;
                 if (Sufix.ContainsKey(i))
                     NewLine = NewLine + Sufix[i];
                 string OriLine = GetLine(i);
-				if (string.IsNullOrWhiteSpace(OriLine))
-					continue;
+                if (string.IsNullOrWhiteSpace(OriLine))
+                    continue;
                 Script[i] = Script[i].Replace(OriLine, NewLine.Replace("\n", "\\N"));
             }
             StringBuilder Compiler = new StringBuilder();
@@ -85,10 +99,12 @@ namespace SSA
             return Encoding.UTF8.GetBytes(Compiler.ToString());
         }
 
-        private void FixTags(ref string line) {
+        private void FixTags(ref string line)
+        {
             string Out = string.Empty;
             bool intag = false;
-            foreach (char c in line) {
+            foreach (char c in line)
+            {
                 if (c == '{')
                     intag = true;
                 if (c == '}')
@@ -100,11 +116,13 @@ namespace SSA
             line = Out;
         }
 
-        private void GetPrefix(int ID, ref string Line) {
+        private void GetPrefix(int ID, ref string Line)
+        {
             if (!Prefix.ContainsKey(ID))
                 Prefix.Add(ID, string.Empty);
             string PrefixStr = string.Empty;
-            foreach (char c in Line) {
+            foreach (char c in Line)
+            {
                 PrefixStr += c;
                 if (c == '}')
                     break;
@@ -114,7 +132,8 @@ namespace SSA
             if (Line.StartsWith("{"))
                 GetPrefix(ID, ref Line);
         }
-        private void GetSufix(int ID, ref string Line) {
+        private void GetSufix(int ID, ref string Line)
+        {
             if (!Sufix.ContainsKey(ID))
                 Sufix.Add(ID, string.Empty);
             string SufixStr = string.Empty;

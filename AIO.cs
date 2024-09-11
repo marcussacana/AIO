@@ -78,8 +78,10 @@ namespace aio
                 new PluginCreator("PO (Filter)", "*.po", true, true, typeof(PO.POPlain)),
                 new PluginCreator("JSON (Filter)", "*.json", true, true, typeof(Json.Helper)),
                 new PluginCreator("NekoNyan KGS File", "*.kgs", true, true, typeof(NekoNyan.KGS)),
-                new PluginCreator("EntisGLS Filter", "*.srcxml", true, true, typeof(RegexFilter))
-
+                new PluginCreator("EntisGLS Filter", "*.srcxml; *.txt", true, true, typeof(RegexFilter)),
+                new PluginCreator("Alice-Tool Text Dump (Filter)", "*.txt", true, true, typeof(AliceTool.Dump)),
+                new PluginCreator("Fire Emblem Three Houses STR Files", "*.bin", true, true, typeof(ThreeHousesSlave.TextSFile)),
+                new PluginCreator("Bullet Girls Phantasia", "*.bnd", true, false, typeof(Projects.BNDDumper.BNDReader))
             };
         }
 
