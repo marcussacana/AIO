@@ -157,7 +157,7 @@ namespace AquaPlusEditor {
                 Buff[i] = Script[i + At];
 
             if (IsBigEnddian)
-                Buff = Buff.Reverse().ToArray();
+                Buff.Reverse();
 
             return BitConverter.ToUInt16(Buff, 0);
         }
@@ -167,7 +167,7 @@ namespace AquaPlusEditor {
                 Buff[i] = Script[i + At];
 
             if (IsBigEnddian)
-                Buff = Buff.Reverse().ToArray();
+                Buff.Reverse();
 
             return BitConverter.ToUInt32(Buff, 0);
         }
@@ -176,7 +176,7 @@ namespace AquaPlusEditor {
             byte[] Buff = BitConverter.GetBytes(Value);
 
             if (IsBigEnddian)
-                Buff = Buff.Reverse().ToArray();
+                Buff.Reverse();
 
             Buff.CopyTo(Script, At);
         }
